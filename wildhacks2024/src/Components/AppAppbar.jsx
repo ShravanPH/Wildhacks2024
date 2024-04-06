@@ -18,6 +18,8 @@ import Stack from '@mui/material/Stack';
 import AssistantDirectionIcon from '@mui/icons-material/AssistantDirection';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+import FormGroup from '@mui/material/FormGroup';
+
 
 
 
@@ -37,6 +39,25 @@ function AppAppBar({ mode }) {
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+  
+    const [formValues, setFormValues] = React.useState({});
+    const handleTextFieldChange = (event ) => {
+      const { name, value } = event.target;
+      setFormValues({
+        ...formValues,
+        [name]: value,
+      });
+    };
+
+    
+    function handleSubmit(event) {
+        console.log(event)
+        event.preventDefault()
+    const specs =  event.get("specs");
+    alert(`You searched for '${specs}'`);
+    
+}
+
 
   const scrollToSection = (sectionId) => {
     const sectionElement = document.getElementById(sectionId);
@@ -51,6 +72,7 @@ function AppAppBar({ mode }) {
       setOpen(false);
     }
   };
+
 
   return (
     <div>
@@ -119,6 +141,7 @@ function AppAppBar({ mode }) {
             useFlexGap
             sx={{ pt: -10, width: { xs: '80%', sm: 'auto' } }}
           >
+            <form >
             <TextField
               id="outlined-basic"
               hiddenLabel
@@ -126,7 +149,8 @@ function AppAppBar({ mode }) {
               variant="outlined"
               aria-label="Enter your email address"
               placeholder="Your email address"
-              
+              onChange={handleTextFieldChange}
+
             />
             <Button variant='outlined'>
             <SwapHorizIcon color='primary'/>
@@ -138,20 +162,34 @@ function AppAppBar({ mode }) {
               size="small"
               variant="outlined"
               aria-label="Enter your email address"
-              placeholder="Your email address"
-              
+              placeholder="Your email addressa"
             />
-            <Button variant="contained" color="primary">
+
+            <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>
               <AssistantDirectionIcon/>
             </Button>
+            </form>
+
+
+            {/* <form action={handleSubmit} >
+
+                        <TextField name="specs" variant="outlined" placeholder="Specs..." />
+                        <TextField name="specs2" variant="outlined" placeholder="Specs..." />                     
+                        <Button type="submit" variant="outlined" >Submit</Button>
+                       
+
+            </form> */}
+
+        <form >
+            <input name="specs" />
+            <button type="submit" onSubmit={handleSubmit}>Search</button>
+            </form>
+
+
 
           </Stack>
             </Box>
 
-            
-
-
-            
           </Toolbar>
         </Container>
       </AppBar>
