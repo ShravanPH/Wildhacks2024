@@ -10,6 +10,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import AppAppBar from './AppAppbar';
 import App from './App';
+import { ContentPasteSearchOutlined, Search } from '@mui/icons-material';
 
 // import Hero from './components/Hero';
 // import LogoCollection from './components/LogoCollection';
@@ -63,19 +64,12 @@ export default function LandingPage() {
   // const LPtheme = createTheme(getLPTheme(mode));
   const defaultTheme = createTheme({ palette: { mode } });
 
-  const toggleColorMode = () => {
-    setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
-
-  const toggleCustomTheme = () => {
-    setShowCustomTheme((prev) => !prev);
-  };
-
+  const [searchRes, setSearchRes] = React.useState();
   return (
     <React.Fragment>
-      <AppAppBar mode={"light"}  />
+      <AppAppBar mode={"light"} setSearchRes={setSearchRes} />
       <Box sx={{ bgcolor: 'background.default' }}>
-      <App></App>
+      <App searchRes={searchRes} setSearchRes={setSearchRes}/>
       </Box>
       </React.Fragment>
 

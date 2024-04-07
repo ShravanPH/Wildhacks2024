@@ -1,6 +1,5 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -24,8 +23,8 @@ import FormGroup from '@mui/material/FormGroup';
 
 
 import { Margin, Padding } from '@mui/icons-material';
+import { Axios } from 'axios';
 // import ToggleColorMode from './ToggleColorMode';
-
 const logoStyle = {
   width: '50px',
   height: 'auto',
@@ -33,15 +32,22 @@ const logoStyle = {
   cursor: 'pointer',
 };
 
-function AppAppBar({ mode }) {
-  const [open, setOpen] = React.useState(false);
+function AppAppBar(props) {
 
-  const toggleDrawer = (newOpen) => () => {
-    setOpen(newOpen);
-  };
+  const axios = require('axios').default;
   
     const [formValues, setFormValues] = React.useState({});
-    const handleTextFieldChange = (event ) => {
+    const [swap, setSwap] = React.useState(false);
+
+   
+    const handleTextFieldChange1 = (event ) => {
+      const { name, value } = event.target;
+      setFormValues({
+        ...formValues,
+        [name]: value,
+      });
+    };
+    const handleTextFieldChange2 = (event ) => {
       const { name, value } = event.target;
       setFormValues({
         ...formValues,
@@ -50,28 +56,36 @@ function AppAppBar({ mode }) {
     };
 
     
-    function handleSubmit(event) {
-        console.log(event)
-        event.preventDefault()
-    const specs =  event.get("specs");
-    alert(`You searched for '${specs}'`);
-    
-}
+   async function handleSubmit(event) {
+  
+      if (swap)
+      {
+      setFormValues({"From":formValues["To"],"To":formValues["From"]})
+      }
+     
+    // axios.get('https://nominatim.openstreetmap.org/search?format=json&q=3214+S+normal+avenue').then(
+    //         function (response) {
+    //           // handle success
+    //           props.setSearchRes(response.data)
+    //         }
+    //     )
+    props.setSearchRes(formValues)
+    console.log(props)    
+        
 
-
-  const scrollToSection = (sectionId) => {
-    const sectionElement = document.getElementById(sectionId);
-    const offset = 128;
-    if (sectionElement) {
-      const targetScroll = sectionElement.offsetTop - offset;
-      sectionElement.scrollIntoView({ behavior: 'smooth' });
-      window.scrollTo({
-        top: targetScroll,
-        behavior: 'smooth',
-      });
-      setOpen(false);
     }
-  };
+
+
+
+
+
+
+
+  function handleSwap(){
+   
+    setSwap(!swap)
+
+  }
 
 
   return (
@@ -85,7 +99,7 @@ function AppAppBar({ mode }) {
           mt: 2,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="xl">
           <Toolbar
             variant="regular"
             sx={(theme) => ({
@@ -100,7 +114,7 @@ function AppAppBar({ mode }) {
                   : 'rgba(0, 0, 0, 0.4)',
               backdropFilter: 'blur(24px)',
               maxHeight: 40,
-              border: '1px solid',
+              border: '2px solid',
               borderColor: 'divider',
               boxShadow:
                 theme.palette.mode === 'light'
@@ -116,43 +130,48 @@ function AppAppBar({ mode }) {
                 ml: '-18px',
                 px: 0,
               }}
+              
             >
-              <img
+             
+          
+              <Stack
+            direction={{ xs: 'row', sm: 'row' }}
+            spacing={8}
+            useFlexGap
+
+            sx={{ pt: -10, width: { xs: '100%', sm: 'auto' },alignItems:'center' }}
+          >
+            <Box sx={{ display: { xs: '100%', md: 'auto' } , marginLeft: '15px'}}>
+
+             <img
                 src={
                   'https://www.svgrepo.com/show/339033/chicago.svg'
                 }
                 style={logoStyle}
                 alt="logo of sitemark"
               />
-              <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                <MenuItem
-                  onClick={() => scrollToSection('features')}
+        </Box>              
+            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                {/* <MenuItem
                   sx={{ py: '6px', px: '12px' }}
-                >
-                  <Typography variant="body2" color="text.primary">
+                > */}
+                  <Typography variant="h6" color="text.secondary">
                     Crime maps
                   </Typography>
-                </MenuItem>
+                {/* </MenuItem> */}
 
               </Box>
-              <Stack
-            direction={{ xs: 'row', sm: 'row' }}
-            spacing={3}
-            useFlexGap
-            sx={{ pt: -10, width: { xs: '80%', sm: 'auto' } }}
-          >
-            <form >
             <TextField
               id="outlined-basic"
               hiddenLabel
               size="small"
               variant="outlined"
-              aria-label="Enter your email address"
-              placeholder="Your email address"
-              onChange={handleTextFieldChange}
-
+              placeholder="From"
+              value = {swap?formValues["To"]:formValues["From"]}
+              onChange={handleTextFieldChange1}
+              name = "From"
             />
-            <Button variant='outlined'>
+            <Button variant='outlined' onClick={handleSwap} >
             <SwapHorizIcon color='primary'/>
             </Button>
 
@@ -161,33 +180,20 @@ function AppAppBar({ mode }) {
               hiddenLabel
               size="small"
               variant="outlined"
-              aria-label="Enter your email address"
-              placeholder="Your email addressa"
+              placeholder="To"
+              value = {swap?formValues["From"]:formValues["To"]}
+              onChange={handleTextFieldChange2}
+              name = "To"
+
             />
 
-            <Button variant="contained" color="primary" type="submit" onClick={handleSubmit}>
+            <Button variant="contained" color="primary"  onClick={handleSubmit}>
               <AssistantDirectionIcon/>
             </Button>
-            </form>
+    
 
-
-            {/* <form action={handleSubmit} >
-
-                        <TextField name="specs" variant="outlined" placeholder="Specs..." />
-                        <TextField name="specs2" variant="outlined" placeholder="Specs..." />                     
-                        <Button type="submit" variant="outlined" >Submit</Button>
-                       
-
-            </form> */}
-
-        <form >
-            <input name="specs" />
-            <button type="submit" onSubmit={handleSubmit}>Search</button>
-            </form>
-
-
-
-          </Stack>
+             </Stack>
+          
             </Box>
 
           </Toolbar>
