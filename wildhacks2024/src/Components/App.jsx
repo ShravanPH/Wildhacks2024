@@ -18,19 +18,16 @@ function App(props) {
       [41.8357515, 41.8358197],  
       [-87.6393317, -87.6390329]
   ]
-  
+  // 6611fca0c14eb594693449zjn59158e api
+
   const blackOptions = { color: 'black' }
   const axios = require('axios').default;
-  console.log(props.searchRes)  
+  console.log(props.path)  
 
-  React.useEffect(()=>
-    {
-    axios.get("https://nominatim.openstreetmap.org/search?format=json&q=3214+S+normal+avenue")
-  .then(response=>console.log(response.data))
-    }
+  // React.useState((
 
-,[props.searchRes])
-  
+
+  // ),[props.searchRes])
 
 
 

@@ -24,6 +24,7 @@ import FormGroup from '@mui/material/FormGroup';
 
 import { Margin, Padding } from '@mui/icons-material';
 import { Axios } from 'axios';
+import App from './App';
 // import ToggleColorMode from './ToggleColorMode';
 const logoStyle = {
   width: '50px',
@@ -38,7 +39,7 @@ function AppAppBar(props) {
   
     const [formValues, setFormValues] = React.useState({});
     const [swap, setSwap] = React.useState(false);
-
+    const [path,setPath] = React.useState([])
    
     const handleTextFieldChange1 = (event ) => {
       const { name, value } = event.target;
@@ -62,18 +63,15 @@ function AppAppBar(props) {
       {
       setFormValues({"From":formValues["To"],"To":formValues["From"]})
       }
-     
-    // axios.get('https://nominatim.openstreetmap.org/search?format=json&q=3214+S+normal+avenue').then(
-    //         function (response) {
-    //           // handle success
-    //           props.setSearchRes(response.data)
-    //         }
-    //     )
-    props.setSearchRes(formValues)
-    console.log(props)    
+      
+    const response = await axios.get("https://geocode.maps.co/search?q=3214+S+Normal+Ave&api_key=6611fca0c14eb594693449zjn59158e")
+    setPath(response.data[0])
+      
+    
         
 
     }
+
 
 
 
@@ -199,6 +197,7 @@ function AppAppBar(props) {
           </Toolbar>
         </Container>
       </AppBar>
+      <App path={path}/>
     </div>
   );
 }

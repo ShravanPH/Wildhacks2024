@@ -69,7 +69,7 @@ export default function LandingPage() {
     <React.Fragment>
       <AppAppBar mode={"light"} setSearchRes={setSearchRes} />
       <Box sx={{ bgcolor: 'background.default' }}>
-      <App searchRes={searchRes} setSearchRes={setSearchRes}/>
+      {/* <App searchRes={searchRes} setSearchRes={setSearchRes}/> */}
       </Box>
       </React.Fragment>
 
