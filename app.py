@@ -6,7 +6,6 @@ from sodapy import Socrata
 from flask_jsonpify import jsonpify
 
 
-
 app = Flask(__name__)
 cors = CORS(app)
 
@@ -36,8 +35,27 @@ dates.sort()
 @cross_origin()
 def crime_positions():
 	
-    # required_cols = df[['primary_type', 'latitude', 'longitude']].copy()
+    positions = df[['primary_type', 'latitude', 'longitude']].copy()
     # res = required_cols.groupby('primary_type')
+    # df1 = res
+    result = []
+
+    for index, row in positions.iterrows():
+        result.append({
+            "type": row['primary_type'],
+            "latitude": row['latitude'],
+            "longitude": row['longitude']
+        })
+
+
+    return {"data": result}
+
+@app.route('/beat-crime-details', methods=["GET"])
+@cross_origin()
+def beat_crime_details():
+	
+    required_cols = df[['primary_type', 'latitude', 'longitude']].copy()
+    res = required_cols.groupby('primary_type')
 
     crime_counts = df.groupby(['beat', 'primary_type']).size().reset_index(name='crime_count')
     print(crime_counts)
@@ -59,24 +77,6 @@ def crimes_per_beat():
 
     print(result)
     return {"message":"hello", "data":result}
-
-
-
-
-# jsondata = json.load(open('beats.json'))
-# # print(type(jsondata['beats']['data'][0]))
-
-# new = []
-# for i in jsondata['beats']['data']:
-#     # print(i[12])
-#     val = {"beat": i[12], "coord": i[8]}
-#     new.append(val)
-# print(new)
-
-# import json
-# with open('data.json', 'w') as f:
-#     json.dump(new, f)
-
 
 
 if __name__ == "__main__":
