@@ -15,8 +15,14 @@ function App(props) {
   const position =  [41.7729,-87.5764]
   const [path,setPath] = React.useState(props.searchRes)
   const rectangle = [
-      [41.8357515, 41.8358197],  
-      [-87.6393317, -87.6390329]
+    [
+      41.975774430214464,
+      -87.7047252651434
+    ],
+    [
+      41.97535481519222,
+      -87.83365455041093
+    ]
   ]
   
   const blackOptions = { color: 'black' }
@@ -75,7 +81,7 @@ function App(props) {
       </Popup>
     </Marker>
     
-    {/* <Rectangle bounds={rectangle} pathOptions={blackOptions} /> */}
+    <Rectangle bounds={rectangle} pathOptions={blackOptions} />
 
 
 

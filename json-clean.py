@@ -17,8 +17,8 @@ for item in data["data"]:
         a = i.split(' ')
         if "" in a:
             a.remove("")
-    
-        formatted_coords.append(a)
+        a = [float(i) for i in a]
+        formatted_coords.append(a[::-1])
     
     formatted_item = {"beat": item["beat"], "coord": formatted_coords}
  
